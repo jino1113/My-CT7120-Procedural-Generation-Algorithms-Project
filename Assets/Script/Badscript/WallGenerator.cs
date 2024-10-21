@@ -11,7 +11,6 @@ public class WallGenerator : MonoBehaviour
     public float boundarySpacing = 0.01f; // ระยะห่างของกำแพง
     public float wallHeight = 3.0f; // ความสูงของกำแพง
     public float wallThickness = 0.5f; // ความหนาของกำแพง
-    public GameObject exitPrefab; // Prefab สำหรับจุดทางออก
     public bool[,] grid; // ตัวแปรสำหรับเก็บสถานะของ Maze
 
     private GameObject player; // ตัวแปรสำหรับเก็บผู้เล่น
@@ -22,7 +21,6 @@ public class WallGenerator : MonoBehaviour
     {
         grid = new bool[X, Z]; // กำหนดขนาดของ grid
         CreateBoundaryWalls();
-        CreateExit(); // เรียกใช้ฟังก์ชันสร้างจุดทางออก
     }
 
     void DrawMaze()
@@ -42,25 +40,6 @@ public class WallGenerator : MonoBehaviour
                 }
             }
         }
-    }
-
-    void CreateExit()
-    {
-        grid = new bool[X, Z]; // กำหนดค่า grid ก่อน 
-                               // ... โค้ดสำหรับสร้าง maze ...
-
-        // ตั้งค่าให้ exitX และ exitY เป็นค่าเริ่มต้น
-        exitX = Random.Range(0, X);
-        exitY = Random.Range(0, Z);
-
-        // ตรวจสอบตำแหน่งจนกว่าจะได้ตำแหน่งที่ว่าง
-        while (grid[exitX, exitY]) // ถ้าตำแหน่งนี้ไม่ว่าง ให้สุ่มใหม่
-        {
-            exitX = Random.Range(0, X);
-            exitY = Random.Range(0, Z);
-        }
-
-        Instantiate(exitPrefab, new Vector3(exitX * tileSpacing, 0, exitY * tileSpacing), Quaternion.identity);
     }
 
     void CreateBoundaryWalls()
