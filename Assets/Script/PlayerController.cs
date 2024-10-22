@@ -1,17 +1,59 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 5.0f;
+    private PlayerControl inputActions;
+    private Vector3 moveInput;
+    private CharacterController characterController;
 
-    void Update()
+    public float moveSpeed = 5f;
+
+    private void Awake()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal"); // A, D
-        float moveVertical = Input.GetAxis("Vertical"); // W, S
+        inputActions = new PlayerControl();
+        characterController = GetComponent<CharacterController>();
+    }
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
-        transform.position += movement * moveSpeed * Time.deltaTime;
+    private void OnEnable()
+    {
+        inputActions.Player.Enable();
+        inputActions.Player.OnMove.performed += OnMove;
+        inputActions.Player.OnMove.canceled += OnMoveCanceled; // เพิ่มการจัดการเมื่อปล่อยปุ่ม
+    }
+
+    private void OnDisable()
+    {
+        inputActions.Player.Disable();
+    }
+
+    private void OnMove(InputAction.CallbackContext context)
+    {
+        Vector2 input = context.ReadValue<Vector2>();
+        moveInput = new Vector3(input.x, 0, input.y);
+        moveInput = Camera.main.transform.TransformDirection(moveInput);
+        moveInput.y = 0; // ตั้งค่า Y เป็น 0
+    }
+
+    private void OnMoveCanceled(InputAction.CallbackContext context)
+    {
+        moveInput = Vector3.zero; // หยุดการเคลื่อนที่เมื่อปล่อยปุ่ม
+    }
+
+
+    private void Move()
+    {
+        // เคลื่อนที่ตามค่าของ moveInput ที่มี Y อยู่
+        Vector3 movement = new Vector3(moveInput.x, moveInput.y, moveInput.z) * moveSpeed * Time.deltaTime;
+
+        // ใช้ characterController ในการเคลื่อนที่
+        characterController.Move(movement);
+    }
+
+    private void Update()
+    {
+        Move(); // เรียกฟังก์ชัน Move() ที่ทำการเคลื่อนที่
     }
 }
