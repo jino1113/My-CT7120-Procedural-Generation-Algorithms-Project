@@ -264,8 +264,8 @@ MonoBehaviour:
   _mazeCellPrefab: {fileID: 4877566313674544872, guid: ed4e5174cf3c67442a7424bc0d1c9612, type: 3}
   _playerPrefab: {fileID: 4708064293755286880, guid: da027a38e1f82cd488df5cfcf82dfe36, type: 3}
   _exitPrefab: {fileID: 3630715539216510921, guid: 397fd7423bbef9b4695252ad3779136b, type: 3}
-  _mazeWidth: 20
-  _mazeDepth: 20
+  _mazeWidth: 8
+  _mazeDepth: 8
 --- !u!114 &51280359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
   textureWidth: 256
   textureHeight: 256
   scale: 20
-  speed: 0.1
+  speed: 1
   directionChangeInterval: 1
 --- !u!1 &343529610
 GameObject:

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 8817009127553492424}
   - component: {fileID: 4442188834575488268}
   - component: {fileID: 1056336176244286879}
-  - component: {fileID: -2126643776428335818}
   - component: {fileID: 739195104771609503}
   - component: {fileID: 3747972121455496930}
   - component: {fileID: 1978184555243287759}
@@ -32,9 +31,9 @@ Transform:
   m_GameObject: {fileID: 4708064293755286880}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.98417, z: 0, w: 0.17722706}
-  m_LocalPosition: {x: 83.06012, y: 90.66094, z: 43.400967}
+  m_LocalPosition: {x: 83.06012, y: 90.6734, z: 43.400967}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 555991026270160491}
   - {fileID: 7370637806477227115}
@@ -113,33 +112,6 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &-2126643776428335818
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4708064293755286880}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 112
-  m_CollisionDetection: 0
 --- !u!143 &739195104771609503
 CharacterController:
   m_ObjectHideFlags: 0
@@ -208,7 +180,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e74118b07439a441b191edd098b6030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 3
+  gravity: -9.8
 --- !u!1 &5264509833229728335
 GameObject:
   m_ObjectHideFlags: 0
@@ -313,7 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecenterTarget: 0
   m_VerticalAxis:
-    Value: 69.00132
+    Value: 70
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
@@ -337,13 +310,13 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_HorizontalAxis:
-    Value: 102.82486
+    Value: -76.63501
     m_SpeedMode: 0
     m_MaxSpeed: 300
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
-    m_InputAxisValue: -0.05
+    m_InputAxisValue: 0
     m_InvertInput: 0
     m_MinValue: -180
     m_MaxValue: 180
@@ -388,7 +361,7 @@ Transform:
   m_GameObject: {fileID: 8621427025517896278}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.07999827, y: 0.91999817, z: -0.07000425}
+  m_LocalPosition: {x: 0.07999827, y: 0.9200061, z: -0.07000425}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:

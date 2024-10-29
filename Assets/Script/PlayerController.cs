@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
 
     public float moveSpeed = 5f;
+    public float gravity = -9.8f; // เพิ่มค่าความเร่งโน้มถ่วง
+    private float verticalVelocity; // ใช้เก็บค่าความเร็วในแกน Y
 
     private void Awake()
     {
@@ -34,21 +36,17 @@ public class PlayerController : MonoBehaviour
         Vector2 input = context.ReadValue<Vector2>();
         moveInput = new Vector3(input.x, 0, input.y);
         moveInput = Camera.main.transform.TransformDirection(moveInput);
-        moveInput.y = 0; // ตั้งค่า Y เป็น 0
-    }
+        moveInput.y = 0;
+    } 
 
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector3.zero; // หยุดการเคลื่อนที่เมื่อปล่อยปุ่ม
     }
 
-
     private void Move()
     {
-        // เคลื่อนที่ตามค่าของ moveInput ที่มี Y อยู่
         Vector3 movement = new Vector3(moveInput.x, moveInput.y, moveInput.z) * moveSpeed * Time.deltaTime;
-
-        // ใช้ characterController ในการเคลื่อนที่
         characterController.Move(movement);
     }
 
