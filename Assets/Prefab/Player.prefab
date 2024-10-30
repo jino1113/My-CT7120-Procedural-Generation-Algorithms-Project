@@ -181,7 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
-  gravity: -9.8
+  gravity: -10
 --- !u!1 &5264509833229728335
 GameObject:
   m_ObjectHideFlags: 0
