@@ -3,71 +3,89 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unity.AI.Navigation;
 
 public class MazeGenerator : MonoBehaviour
 {
     [SerializeField]
-    private MazeCell _mazeCellPrefab; // Prefab ของเซลล์ในเขาวงกต / Prefab for a cell in the maze
+    private MazeCell _mazeCellPrefab;
 
     [SerializeField]
-    private GameObject _playerPrefab; // Prefab ของตัวผู้เล่น / Prefab for the player
+    private GameObject _playerPrefab;
 
     [SerializeField]
-    private GameObject _exitPrefab; // Prefab ของทางออก / Prefab for the exit
+    private GameObject _exitPrefab;
 
     [SerializeField]
-    private int _mazeWidth; // ความกว้างของเขาวงกต / Width of the maze
+    private GameObject _enemyBallPrefab;
 
     [SerializeField]
-    private int _mazeDepth; // ความลึกของเขาวงกต / Depth of the maze
+    private int _mazeWidth;
 
-    private MazeCell[,] _mazeGrid; // อาร์เรย์ 2 มิติสำหรับเก็บเซลล์ทั้งหมดในเขาวงกต / 2D array to store all cells in the maze
-    private Transform spawnPoint; // ตำแหน่งที่ใช้สำหรับ Spawn ตัวผู้เล่น / Spawn position for the player
+    [SerializeField]
+    private int _mazeDepth;
+
+    [SerializeField]
+    private float minimumDistanceFromPlayer = 10.0f; // ระยะห่างขั้นต่ำจากผู้เล่น / Minimum distance from the player
+
+    private MazeCell[,] _mazeGrid;
+    private Transform spawnPoint;
 
     void Start()
     {
-        // สร้างอาร์เรย์สำหรับเขาวงกตตามขนาดที่กำหนด / Create an array for the maze with the specified size
         _mazeGrid = new MazeCell[_mazeWidth, _mazeDepth];
 
-        // วนลูปเพื่อสร้างเซลล์แต่ละเซลล์ในตำแหน่งที่ถูกต้อง / Loop to create each cell at the correct position
         for (int x = 0; x < _mazeWidth; x++)
         {
             for (int z = 0; z < _mazeDepth; z++)
             {
-                // สร้างเซลล์ใหม่โดยตั้งตำแหน่งตามพิกัด x และ z / Instantiate a new cell at the x and z coordinates
-                _mazeGrid[x, z] = Instantiate(_mazeCellPrefab, new Vector3(x, 0, z), Quaternion.identity);
+                _mazeGrid[x, z] = Instantiate(_mazeCellPrefab, new Vector3(x, 0, z), Quaternion.identity, transform);
+                _mazeGrid[x, z].transform.localPosition = new Vector3(x, 0, z);
             }
         }
 
-        // เริ่มสร้างเขาวงกตโดยเริ่มที่เซลล์แรก / Start maze generation from the first cell
         GenerateMaze(null, _mazeGrid[0, 0]);
+        GetComponent<NavMeshSurface>().BuildNavMesh();
 
-        // ตั้งค่า spawnPoint สำหรับการ spawn ตัวผู้เล่นที่เซลล์แรก / Set spawnPoint at the first cell for player spawn
+
         spawnPoint = _mazeGrid[0, 0].transform;
 
-        // เรียกฟังก์ชัน SpawnAndSetCamera เพื่อสร้างตัวผู้เล่นและตั้งค่ากล้อง / Call SpawnAndSetCamera to spawn the player and set up the camera
         SpawnAndSetCamera(_playerPrefab, spawnPoint);
 
-        // สร้างทางออกที่ตำแหน่งเซลล์สุดท้ายของเขาวงกต / Place the exit at the last cell in the maze
         Instantiate(_exitPrefab, _mazeGrid[_mazeWidth - 1, _mazeDepth - 1].transform.position, Quaternion.identity);
+
+        SpawnEnemyBall(spawnPoint, minimumDistanceFromPlayer);
+
+    }
+
+    private void SpawnEnemyBall(Transform playerTransform, float customMinimumDistance)
+    {
+        Vector3 spawnPosition;
+        MazeCell randomCell;
+
+        do
+        {
+            int x = Random.Range(0, _mazeWidth); // สุ่มตำแหน่ง x ภายในขอบเขต
+            int z = Random.Range(0, _mazeDepth); // สุ่มตำแหน่ง z ภายในขอบเขต
+
+            randomCell = _mazeGrid[x, z];
+            spawnPosition = randomCell.transform.position + Vector3.up * 0.5f; // ตำแหน่งของ MazeCell
+
+        } while (Vector3.Distance(spawnPosition, playerTransform.position) < customMinimumDistance);
+
+        GameObject enemyBall = Instantiate(_enemyBallPrefab, spawnPosition, Quaternion.identity);
+        enemyBall.GetComponent<EnemyBall>().player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void GenerateMaze(MazeCell previousCell, MazeCell currentCell)
     {
-        // กำหนดให้เซลล์ปัจจุบันเป็นเซลล์ที่ถูกเยี่ยมชมแล้ว / Mark the current cell as visited
         currentCell.Visit();
-
-        // ลบกำแพงระหว่างเซลล์ปัจจุบันและเซลล์ก่อนหน้า / Remove walls between current and previous cells
         ClearWalls(previousCell, currentCell);
 
         MazeCell nextCell;
-
-        // วนลูปเพื่อค้นหาเซลล์ถัดไปที่ยังไม่ถูกเยี่ยมชม / Loop to find the next unvisited cell
         do
         {
             nextCell = GetNextUnvisitedCell(currentCell);
-
-            // ถ้ามีเซลล์ถัดไปที่ยังไม่ถูกเยี่ยมชม ให้เรียกใช้ GenerateMaze เพื่อดำเนินการต่อ / If there is an unvisited cell, continue maze generation
             if (nextCell != null)
             {
                 GenerateMaze(currentCell, nextCell);
@@ -77,91 +95,47 @@ public class MazeGenerator : MonoBehaviour
 
     private MazeCell GetNextUnvisitedCell(MazeCell currentCell)
     {
-        // ดึงรายการเซลล์ที่ยังไม่ถูกเยี่ยมชมที่อยู่ติดกับเซลล์ปัจจุบัน / Get a list of unvisited neighboring cells
         var unvisitedCells = GetUnvisitedCells(currentCell);
-
-        // สุ่มเลือกเซลล์ที่ยังไม่ถูกเยี่ยมชม / Randomly select an unvisited cell
         return unvisitedCells.OrderBy(_ => Random.Range(1, 10)).FirstOrDefault();
     }
 
     private IEnumerable<MazeCell> GetUnvisitedCells(MazeCell currentCell)
     {
-        int x = (int)currentCell.transform.position.x;
-        int z = (int)currentCell.transform.position.z;
+        int x = (int)currentCell.transform.localPosition.x;
+        int z = (int)currentCell.transform.localPosition.z;
 
-        // ตรวจสอบเซลล์ด้านขวา / Check the cell on the right
-        if (x + 1 < _mazeWidth)
-        {
-            var cellToRight = _mazeGrid[x + 1, z];
-            if (!cellToRight.IsVisited)
-            {
-                yield return cellToRight;
-            }
-        }
-
-        // ตรวจสอบเซลล์ด้านซ้าย / Check the cell on the left
-        if (x - 1 >= 0)
-        {
-            var cellToLeft = _mazeGrid[x - 1, z];
-            if (!cellToLeft.IsVisited)
-            {
-                yield return cellToLeft;
-            }
-        }
-
-        // ตรวจสอบเซลล์ด้านหน้า / Check the cell in front
-        if (z + 1 < _mazeDepth)
-        {
-            var cellToFront = _mazeGrid[x, z + 1];
-            if (!cellToFront.IsVisited)
-            {
-                yield return cellToFront;
-            }
-        }
-
-        // ตรวจสอบเซลล์ด้านหลัง / Check the cell behind
-        if (z - 1 >= 0)
-        {
-            var cellToBack = _mazeGrid[x, z - 1];
-            if (!cellToBack.IsVisited)
-            {
-                yield return cellToBack;
-            }
-        }
+        if (x + 1 < _mazeWidth && !_mazeGrid[x + 1, z].IsVisited) yield return _mazeGrid[x + 1, z];
+        if (x - 1 >= 0 && !_mazeGrid[x - 1, z].IsVisited) yield return _mazeGrid[x - 1, z];
+        if (z + 1 < _mazeDepth && !_mazeGrid[x, z + 1].IsVisited) yield return _mazeGrid[x, z + 1];
+        if (z - 1 >= 0 && !_mazeGrid[x, z - 1].IsVisited) yield return _mazeGrid[x, z - 1];
     }
 
     private void ClearWalls(MazeCell previousCell, MazeCell currentCell)
     {
-        // ถ้าไม่มีเซลล์ก่อนหน้า ให้ออกจากฟังก์ชัน / If there is no previous cell, exit the function
-        if (previousCell == null)
-        {
-            return;
-        }
+        if (previousCell == null) return;
 
-        // ลบกำแพงด้านขวาและซ้ายระหว่างเซลล์ปัจจุบันกับเซลล์ก่อนหน้า / Remove right and left walls between current and previous cells
-        if (previousCell.transform.position.x < currentCell.transform.position.x)
+        if (previousCell.transform.localPosition.x < currentCell.transform.localPosition.x)
         {
             previousCell.ClearRightWall();
             currentCell.ClearLeftWall();
             return;
         }
 
-        if (previousCell.transform.position.x > currentCell.transform.position.x)
+        if (previousCell.transform.localPosition.x > currentCell.transform.localPosition.x)
         {
             previousCell.ClearLeftWall();
             currentCell.ClearRightWall();
             return;
         }
 
-        // ลบกำแพงด้านหน้าและหลังระหว่างเซลล์ปัจจุบันกับเซลล์ก่อนหน้า / Remove front and back walls between current and previous cells
-        if (previousCell.transform.position.z < currentCell.transform.position.z)
+        if (previousCell.transform.localPosition.z < currentCell.transform.localPosition.z)
         {
             previousCell.ClearFrontWall();
             currentCell.ClearBackWall();
             return;
         }
 
-        if (previousCell.transform.position.z > currentCell.transform.position.z)
+        if (previousCell.transform.localPosition.z > currentCell.transform.localPosition.z)
         {
             previousCell.ClearBackWall();
             currentCell.ClearFrontWall();
@@ -169,16 +143,12 @@ public class MazeGenerator : MonoBehaviour
         }
     }
 
-    // ฟังก์ชันที่เรียกเพื่อ spawn ตัวผู้เล่นและตั้งค่ากล้อง / Function to spawn the player and set up the camera
     private void SpawnAndSetCamera(GameObject playerPrefab, Transform spawnPoint)
     {
-        // เพิ่มตำแหน่ง Y ของ spawnPoint ให้สูงขึ้น
-        Vector3 spawnPosition = spawnPoint.position + Vector3.up * 1.0f; // เพิ่ม 1 หน่วยในแกน Y
-
-        // สร้างตัวผู้เล่นที่ตำแหน่ง spawnPosition
+        Vector3 spawnPosition = spawnPoint.position + Vector3.up * 1.0f;
         GameObject player = Instantiate(playerPrefab, spawnPosition, spawnPoint.rotation);
+        player.tag = "Player";
 
-        // ค้นหา CinemachineVirtualCamera และตั้งค่าการติดตามตัวผู้เล่น
         CinemachineVirtualCamera cinemachineCam = FindObjectOfType<CinemachineVirtualCamera>();
         if (cinemachineCam != null)
         {
@@ -186,5 +156,4 @@ public class MazeGenerator : MonoBehaviour
             cinemachineCam.LookAt = player.transform;
         }
     }
-
 }
