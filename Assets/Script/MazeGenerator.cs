@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.AI.Navigation;
+using UnityEngine.AI;
 
 public class MazeGenerator : MonoBehaviour
 {
@@ -65,16 +66,27 @@ public class MazeGenerator : MonoBehaviour
 
         do
         {
-            int x = Random.Range(0, _mazeWidth); // สุ่มตำแหน่ง x ภายในขอบเขต
-            int z = Random.Range(0, _mazeDepth); // สุ่มตำแหน่ง z ภายในขอบเขต
+            int x = Random.Range(0, _mazeWidth);
+            int z = Random.Range(0, _mazeDepth);
 
             randomCell = _mazeGrid[x, z];
-            spawnPosition = randomCell.transform.position + Vector3.up * 0.5f; // ตำแหน่งของ MazeCell
-
+            spawnPosition = randomCell.transform.position + Vector3.up * 0.5f;
         } while (Vector3.Distance(spawnPosition, playerTransform.position) < customMinimumDistance);
 
-        GameObject enemyBall = Instantiate(_enemyBallPrefab, spawnPosition, Quaternion.identity);
-        enemyBall.GetComponent<EnemyBall>().player = GameObject.FindGameObjectWithTag("Player").transform;
+        // ใช้ NavMesh.SamplePosition เพื่อตรวจสอบตำแหน่งที่อยู่บน NavMesh
+        NavMeshHit hit;
+        float searchRadius = 5.0f;
+
+        if (NavMesh.SamplePosition(spawnPosition, out hit, searchRadius, NavMesh.AllAreas))
+        {
+            // สร้างศัตรูที่ตำแหน่งที่พบจาก NavMesh
+            GameObject enemyBall = Instantiate(_enemyBallPrefab, hit.position, Quaternion.identity);
+            enemyBall.GetComponent<EnemyBall>().player = GameObject.FindGameObjectWithTag("Player").transform;
+        }
+        else
+        {
+            Debug.LogWarning("Failed to find a valid position on the NavMesh for EnemyBall!");
+        }
     }
 
     private void GenerateMaze(MazeCell previousCell, MazeCell currentCell)
