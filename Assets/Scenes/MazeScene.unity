@@ -292,11 +292,7 @@ MonoBehaviour:
   _enemyBallPrefab: {fileID: 7862723879752903919, guid: e1a55e50c7079fa4a89362ad9b696592, type: 3}
   _mazeWidth: 10
   _mazeDepth: 10
-<<<<<<< HEAD
   minimumDistanceFromPlayer: 10
-=======
-  minimumDistanceFromPlayer: 20
->>>>>>> 198805db681248af14e914aa8aef7e93b703f3e8
 --- !u!114 &51280359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,7 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AgentTypeID: -1923039037
+  m_AgentTypeID: 0
   m_CollectObjects: 0
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
@@ -346,7 +342,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 52e1e472f6151c2419db347811488b95, type: 2}
   m_BuildHeightMesh: 0
-<<<<<<< HEAD
 --- !u!1001 &899132537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -408,8 +403,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e1a55e50c7079fa4a89362ad9b696592, type: 3}
-=======
->>>>>>> 198805db681248af14e914aa8aef7e93b703f3e8
 --- !u!1 &1045994244
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,3 +768,4 @@ SceneRoots:
   - {fileID: 51280351}
   - {fileID: 1875512729}
   - {fileID: 1045994248}
+  - {fileID: 899132537}
