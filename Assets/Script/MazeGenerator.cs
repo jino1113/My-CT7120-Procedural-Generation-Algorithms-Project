@@ -81,13 +81,33 @@ public class MazeGenerator : MonoBehaviour
         {
             // สร้างศัตรูที่ตำแหน่งที่พบจาก NavMesh
             GameObject enemyBall = Instantiate(_enemyBallPrefab, hit.position, Quaternion.identity);
-            enemyBall.GetComponent<EnemyBall>().player = GameObject.FindGameObjectWithTag("Player").transform;
+
+            // ตรวจสอบว่า GameObject "Player" มีอยู่หรือไม่
+            GameObject playerObject = GameObject.FindGameObjectWithTag("Player");
+            if (playerObject != null)
+            {
+                // ตรวจสอบว่า enemyBall มี Component "EnemyBall" หรือไม่
+                EnemyBall enemyBallScript = enemyBall.GetComponent<EnemyBall>();
+                if (enemyBallScript != null)
+                {
+                    enemyBallScript.player = playerObject.transform; // ตั้งค่าผู้เล่นให้ EnemyBall
+                }
+                else
+                {
+                    Debug.LogWarning("EnemyBall prefab does not have an EnemyBall script attached!");
+                }
+            }
+            else
+            {
+                Debug.LogWarning("No GameObject with Tag 'Player' found in the scene!");
+            }
         }
         else
         {
             Debug.LogWarning("Failed to find a valid position on the NavMesh for EnemyBall!");
         }
     }
+
 
     private void GenerateMaze(MazeCell previousCell, MazeCell currentCell)
     {
