@@ -32,6 +32,17 @@ public class MazeGenerator : MonoBehaviour
     private MazeCell[,] _mazeGrid; // Grid ที่ใช้เก็บเซลล์ของเขาวงกต
     private Transform spawnPoint; // จุดเริ่มต้นของผู้เล่นในเขาวงกต
 
+    public int GetMazeWidth()
+    {
+        return _mazeWidth; // คืนค่าความกว้างของเขาวงกต
+    }
+
+    public int GetMazeDepth()
+    {
+        return _mazeDepth; // คืนค่าความลึกของเขาวงกต
+    }
+
+
     void Start()
     {
         // สร้างเซลล์ของเขาวงกต
