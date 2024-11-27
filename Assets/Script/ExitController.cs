@@ -2,45 +2,59 @@ using UnityEngine;
 
 public class ExitController : MonoBehaviour
 {
-    public string uiName = "winUI"; // ชื่อของ UI GameObject ใน Canvas
+    // Name of the UI GameObject in the Canvas / ชื่อของ UI GameObject ใน Canvas
+    public string uiName = "winUI";
 
-    private GameObject winUI;
+    private GameObject winUI; // Reference to the Win UI / ตัวอ้างอิงถึง Win UI
 
     private void Start()
     {
-        // ค้นหา UI GameObject ผ่านชื่อ
+        // Find the UI GameObject by name / ค้นหา UI GameObject ผ่านชื่อ
         winUI = GameObject.Find(uiName);
 
         if (winUI == null)
         {
+            // Display error if the UI is not found / แสดงข้อผิดพลาดถ้าไม่พบ UI
             Debug.LogError($"GameObject with name '{uiName}' not found in the scene.");
         }
         else
         {
-            winUI.SetActive(false); // ปิด UI ตั้งแต่เริ่มต้น
+            // Disable the UI at the start of the game / ปิด UI ตั้งแต่เริ่มต้น
+            winUI.SetActive(false);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player")) // ตรวจสอบว่าผู้เล่นชนหรือไม่
+        // Check if the player collided with the Exit Prefab / ตรวจสอบว่าผู้เล่นชนกับ Exit Prefab หรือไม่
+        if (other.CompareTag("Player"))
         {
             if (winUI != null)
             {
-                winUI.SetActive(true); // เปิด UI เมื่อผู้เล่นชนกับ Exit Prefab
-                Time.timeScale = 0f;  // หยุดเกม
+                // Enable the Win UI / เปิด UI เมื่อผู้เล่นชนกับ Exit Prefab
+                winUI.SetActive(true);
+
+                // Pause the game / หยุดเกม
+                Time.timeScale = 0f;
+
+                // Log the action for debugging / บันทึกการกระทำสำหรับตรวจสอบ
                 Debug.Log("Player reached the exit. Game paused and UI displayed!");
             }
         }
     }
 
-    // ฟังก์ชันสำหรับ Resume เกมเมื่อปิด UI
+    // Function to resume the game when the UI is closed / ฟังก์ชันสำหรับ Resume เกมเมื่อปิด UI
     public void ResumeGame()
     {
         if (winUI != null)
         {
-            winUI.SetActive(false); // ปิด UI
-            Time.timeScale = 1f;    // เริ่มเกมใหม่
+            // Disable the Win UI / ปิด UI
+            winUI.SetActive(false);
+
+            // Resume the game by resetting time scale / เริ่มเกมใหม่โดยตั้งค่า Time.timeScale กลับเป็น 1
+            Time.timeScale = 1f;
+
+            // Log the action for debugging / บันทึกการกระทำสำหรับตรวจสอบ
             Debug.Log("Game resumed.");
         }
     }

@@ -4,53 +4,53 @@ using UnityEngine;
 
 public class MazeCell : MonoBehaviour
 {
-    // อ้างอิงถึงกำแพงต่างๆ ของเซลล์ในเขาวงกต
+    // References to the walls of the maze cell / อ้างอิงถึงกำแพงต่างๆ ของเซลล์ในเขาวงกต
     [SerializeField]
-    private GameObject _leftWall; // กำแพงด้านซ้ายของเซลล์
+    private GameObject _leftWall; // Left wall of the cell / กำแพงด้านซ้ายของเซลล์
 
     [SerializeField]
-    private GameObject _rightWall; // กำแพงด้านขวาของเซลล์
+    private GameObject _rightWall; // Right wall of the cell / กำแพงด้านขวาของเซลล์
 
     [SerializeField]
-    private GameObject _frontWall; // กำแพงด้านหน้าของเซลล์
+    private GameObject _frontWall; // Front wall of the cell / กำแพงด้านหน้าของเซลล์
 
     [SerializeField]
-    private GameObject _backWall; // กำแพงด้านหลังของเซลล์
+    private GameObject _backWall; // Back wall of the cell / กำแพงด้านหลังของเซลล์
 
     [SerializeField]
-    private GameObject _unvisitedBlock; // บล็อกที่แสดงว่าเซลล์ยังไม่ได้เยี่ยมชม
+    private GameObject _unvisitedBlock; // Block that indicates the cell has not been visited / บล็อกที่แสดงว่าเซลล์ยังไม่ได้เยี่ยมชม
 
-    // ตัวแปรบอกสถานะว่าเซลล์ถูกเยี่ยมชมแล้วหรือยัง
+    // Variable to indicate whether the cell has been visited / ตัวแปรบอกสถานะว่าเซลล์ถูกเยี่ยมชมแล้วหรือยัง
     public bool IsVisited { get; private set; }
 
-    // ฟังก์ชันที่ถูกเรียกเมื่อเซลล์ถูกเยี่ยมชม
+    // Function called when the cell is visited / ฟังก์ชันที่ถูกเรียกเมื่อเซลล์ถูกเยี่ยมชม
     public void Visit()
     {
-        IsVisited = true; // ตั้งสถานะว่าเซลล์ถูกเยี่ยมชมแล้ว
-        _unvisitedBlock.SetActive(false); // ปิดการแสดงผลของบล็อกที่แสดงสถานะ "ยังไม่ได้เยี่ยมชม"
+        IsVisited = true; // Mark the cell as visited / ตั้งสถานะว่าเซลล์ถูกเยี่ยมชมแล้ว
+        _unvisitedBlock.SetActive(false); // Disable the unvisited block indicator / ปิดการแสดงผลของบล็อกที่แสดงสถานะ "ยังไม่ได้เยี่ยมชม"
     }
 
-    // ฟังก์ชันสำหรับลบกำแพงด้านซ้าย
+    // Function to remove the left wall / ฟังก์ชันสำหรับลบกำแพงด้านซ้าย
     public void ClearLeftWall()
     {
-        _leftWall.SetActive(false); // ปิดการแสดงผลกำแพงด้านซ้าย
+        _leftWall.SetActive(false); // Disable the left wall / ปิดการแสดงผลกำแพงด้านซ้าย
     }
 
-    // ฟังก์ชันสำหรับลบกำแพงด้านขวา
+    // Function to remove the right wall / ฟังก์ชันสำหรับลบกำแพงด้านขวา
     public void ClearRightWall()
     {
-        _rightWall.SetActive(false); // ปิดการแสดงผลกำแพงด้านขวา
+        _rightWall.SetActive(false); // Disable the right wall / ปิดการแสดงผลกำแพงด้านขวา
     }
 
-    // ฟังก์ชันสำหรับลบกำแพงด้านหน้า
+    // Function to remove the front wall / ฟังก์ชันสำหรับลบกำแพงด้านหน้า
     public void ClearFrontWall()
     {
-        _frontWall.SetActive(false); // ปิดการแสดงผลกำแพงด้านหน้า
+        _frontWall.SetActive(false); // Disable the front wall / ปิดการแสดงผลกำแพงด้านหน้า
     }
 
-    // ฟังก์ชันสำหรับลบกำแพงด้านหลัง
+    // Function to remove the back wall / ฟังก์ชันสำหรับลบกำแพงด้านหลัง
     public void ClearBackWall()
     {
-        _backWall.SetActive(false); // ปิดการแสดงผลกำแพงด้านหลัง
+        _backWall.SetActive(false); // Disable the back wall / ปิดการแสดงผลกำแพงด้านหลัง
     }
 }
