@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement; // เพิ่มการใช้งาน SceneManager
 
 public class PauseMenuController : MonoBehaviour
 {
@@ -37,4 +38,3 @@ public class PauseMenuController : MonoBehaviour
         isGamePaused = false; // อัปเดตสถานะเป็น Resume
     }
 }
-

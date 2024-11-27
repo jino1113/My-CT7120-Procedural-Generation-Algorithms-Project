@@ -7,6 +7,7 @@ public class SceneController : MonoBehaviour
     public void LoadScene(string sceneName)
     {
         // โหลด Scene ตามชื่อที่ส่งมา
+        Time.timeScale = 1f;
         SceneManager.LoadScene(sceneName);
     }
 
