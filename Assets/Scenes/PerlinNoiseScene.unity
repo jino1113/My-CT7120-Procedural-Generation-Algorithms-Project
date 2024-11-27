@@ -2381,6 +2381,30 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1096434910387110833, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096434910387110833, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096434910387110833, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096434910387110833, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
+    - target: {fileID: 2434858749202989957, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 963194227}
+    - target: {fileID: 2434858749202989957, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -2411,6 +2435,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_LocalScale.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
