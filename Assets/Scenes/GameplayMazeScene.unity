@@ -795,6 +795,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -138.60132
       objectReference: {fileID: 0}
+    - target: {fileID: 7690273476459960782, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690273476459960782, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7046394916368053653}
+    - target: {fileID: 7690273476459960782, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadScene
+      objectReference: {fileID: 0}
+    - target: {fileID: 7690273476459960782, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: SceneController, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 8011954567709082448, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: cinemachineBrain
       value: 
@@ -804,6 +820,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+--- !u!114 &7046394916368053653 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2218607195207594142, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+  m_PrefabInstance: {fileID: 7046394916368053652}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7cf0229928d057e448300eca06fccae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

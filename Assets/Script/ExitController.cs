@@ -31,6 +31,8 @@ public class ExitController : MonoBehaviour
         {
             if (winUI != null)
             {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 // Enable the Win UI / เปิด UI เมื่อผู้เล่นชนกับ Exit Prefab
                 winUI.SetActive(true);
 

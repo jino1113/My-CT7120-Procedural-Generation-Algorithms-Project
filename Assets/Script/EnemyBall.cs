@@ -118,6 +118,8 @@ public class EnemyBall : MonoBehaviour
         // Show the loss UI / แสดง UI แพ้
         if (lossUI != null)
         {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             lossUI.SetActive(true);
         }
 
