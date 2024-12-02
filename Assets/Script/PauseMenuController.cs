@@ -15,7 +15,7 @@ public class PauseMenuController : MonoBehaviour
         cinemachineBrain = FindObjectOfType<CinemachineBrain>();
         if (cinemachineBrain == null)
         {
-            Debug.LogWarning("Cinemachine Brain not found in the scene.");
+            //Debug.LogWarning("Cinemachine Brain not found in the scene.");
         }
     }
 
@@ -65,5 +65,21 @@ public class PauseMenuController : MonoBehaviour
         {
             cinemachineBrain.enabled = true; // Enable Cinemachine Brain
         }
+    }
+
+    public void PausePreviewGame()
+    {
+        pauseMenuUI.SetActive(true); // Show the Pause Menu
+        Time.timeScale = 0f; // Stop in-game time
+        isGamePaused = true; // Update the game state to paused
+
+    }
+
+    public void ResumePreviewGame()
+    {
+        pauseMenuUI.SetActive(false); // Hide the Pause Menu
+        Time.timeScale = 1f; // Resume in-game time
+        isGamePaused = false; // Update the game state to resumed
+
     }
 }

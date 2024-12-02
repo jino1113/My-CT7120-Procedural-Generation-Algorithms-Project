@@ -1352,8 +1352,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 749.75, y: 334.45}
-  m_SizeDelta: {x: 999.6655, y: 310}
+  m_AnchoredPosition: {x: 717.09, y: -188.72}
+  m_SizeDelta: {x: 934.3474, y: 266.4544}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &564187849
 MonoBehaviour:
@@ -3555,6 +3555,10 @@ PrefabInstance:
       propertyPath: m_ReferenceResolution.y
       value: 1080
       objectReference: {fileID: 0}
+    - target: {fileID: 2218607195207594142, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: pauseMenuUI
+      value: 
+      objectReference: {fileID: 1791837806}
     - target: {fileID: 2434858749202989957, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: m_Camera
       value: 
@@ -3659,6 +3663,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 5989753920599242485, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1119890073}
+    - target: {fileID: 5989753920599242485, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResumePreviewGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 5989753920599242485, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PauseMenuController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8011954567709082448, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9082130390155560384, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3676,6 +3696,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
   m_PrefabInstance: {fileID: 1119890071}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1119890073 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8011954567709082448, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+  m_PrefabInstance: {fileID: 1119890071}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 967c92f3cfea9574085d3c29d93a77ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1193113956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5294,6 +5325,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726469953}
   m_CullTransparentMesh: 1
+--- !u!1 &1791837806 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2504551480144534795, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+  m_PrefabInstance: {fileID: 1119890071}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1843267134
 GameObject:
   m_ObjectHideFlags: 0
