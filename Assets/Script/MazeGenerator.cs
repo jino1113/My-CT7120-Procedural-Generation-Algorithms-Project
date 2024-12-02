@@ -36,6 +36,10 @@ public class MazeGenerator : MonoBehaviour
     [SerializeField]
     private float minimumDistanceFromPlayer = 10.0f;
 
+    // Prefab for the landmark / Prefab สำหรับแลนด์มาร์ค
+    [SerializeField]
+    private GameObject _landmarkPrefab;
+
     // The 2D array representing the maze grid / Grid ที่ใช้เก็บเซลล์ของเขาวงกต
     private MazeCell[,] _mazeGrid;
 
@@ -56,36 +60,65 @@ public class MazeGenerator : MonoBehaviour
 
     void Start()
     {
-        // Generate the maze grid / สร้างเซลล์ของเขาวงกต
+        // สร้างเขาวงกต, ผู้เล่น, ทางออก และศัตรูเหมือนเดิม
         _mazeGrid = new MazeCell[_mazeWidth, _mazeDepth];
         for (int x = 0; x < _mazeWidth; x++)
         {
             for (int z = 0; z < _mazeDepth; z++)
             {
-                // Instantiate and position each cell / สร้างเซลล์และวางในตำแหน่งที่กำหนด
                 _mazeGrid[x, z] = Instantiate(_mazeCellPrefab, new Vector3(x, 0, z), Quaternion.identity, transform);
                 _mazeGrid[x, z].transform.localPosition = new Vector3(x, 0, z);
             }
         }
 
-        // Generate the maze paths / เริ่มสร้างเขาวงกต
         GenerateMaze(null, _mazeGrid[0, 0]);
-
-        // Build a NavMesh for AI navigation / สร้าง NavMesh สำหรับ AI
         GetComponent<NavMeshSurface>().BuildNavMesh();
 
-        // Set the player's spawn point / กำหนดจุดเกิดของผู้เล่น
         spawnPoint = _mazeGrid[0, 0].transform;
-
-        // Spawn the player and configure the camera / สร้างตัวผู้เล่นและกล้อง
         SpawnAndSetCamera(_playerPrefab, spawnPoint);
 
-        // Spawn the maze exit / สร้างจุดออกจากเขาวงกต
         Instantiate(_exitPrefab, _mazeGrid[_mazeWidth - 1, _mazeDepth - 1].transform.position, Quaternion.identity);
-
-        // Spawn the enemies / สร้างศัตรู
         SpawnEnemyBall(spawnPoint, minimumDistanceFromPlayer);
+
+        // เรียกใช้ฟังก์ชัน SpawnMultipleLandmarks
+        GameObject exitObject = GameObject.FindGameObjectWithTag("Exit");
+        List<GameObject> enemies = GameObject.FindGameObjectsWithTag("Enemy").ToList();
+
+        int numberOfLandmarks = 5; // จำนวนแลนด์มาร์คที่ต้องการสร้าง
+        float minDistanceFromPlayer = 5f;
+        float minDistanceFromExit = 5f;
+        float minDistanceFromEnemies = 3f;
+
+        SpawnMultipleLandmarks(_landmarkPrefab, spawnPoint, exitObject, numberOfLandmarks, minDistanceFromPlayer, minDistanceFromExit, enemies, minDistanceFromEnemies);
     }
+
+
+
+    private void SpawnMultipleLandmarks(GameObject landmarkPrefab, Transform playerTransform, GameObject exit, int numberOfLandmarks, float minDistanceFromPlayer, float minDistanceFromExit, List<GameObject> enemies, float minDistanceFromEnemies)
+    {
+        for (int i = 0; i < numberOfLandmarks; i++)
+        {
+            Vector3 spawnPosition;
+            MazeCell randomCell;
+
+            // หาตำแหน่งสุ่มที่เหมาะสมสำหรับแลนด์มาร์ค
+            do
+            {
+                int x = Random.Range(0, _mazeWidth);
+                int z = Random.Range(0, _mazeDepth);
+
+                randomCell = _mazeGrid[x, z];
+                spawnPosition = randomCell.transform.position + Vector3.up * 0.5f;
+
+            } while (Vector3.Distance(spawnPosition, playerTransform.position) < minDistanceFromPlayer ||
+                     Vector3.Distance(spawnPosition, exit.transform.position) < minDistanceFromExit ||
+                     enemies.Any(enemy => Vector3.Distance(spawnPosition, enemy.transform.position) < minDistanceFromEnemies));
+
+            // สร้างแลนด์มาร์คที่ตำแหน่งที่หาได้
+            Instantiate(landmarkPrefab, spawnPosition, Quaternion.identity);
+        }
+    }
+
 
     private void SpawnEnemyBall(Transform playerTransform, float customMinimumDistance)
     {

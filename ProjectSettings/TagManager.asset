@@ -8,6 +8,7 @@ TagManager:
   - flood
   - Enemy
   - Cube
+  - Exit
   layers:
   - Default
   - TransparentFX

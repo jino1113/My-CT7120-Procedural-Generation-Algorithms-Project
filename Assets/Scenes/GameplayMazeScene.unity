@@ -525,7 +525,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902106104}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.02553506, y: -0.97416776, z: 0.17037836, w: 0.14600113}
+  m_LocalRotation: {x: -0.33169046, y: -0.66598654, z: 0.43717307, w: -0.5052951}
   m_LocalPosition: {x: 83.00957, y: 91.5934, z: 43.494476}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -662,6 +662,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gamemanager
       objectReference: {fileID: 0}
+    - target: {fileID: 7306774331404556163, guid: cd2d032ceb5b8bc478a6bfff47756848, type: 3}
+      propertyPath: _landmarkPrefab
+      value: 
+      objectReference: {fileID: 1646047989958134554, guid: 8cbcb14087bf86a4d9c40c7cefe26e38, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
