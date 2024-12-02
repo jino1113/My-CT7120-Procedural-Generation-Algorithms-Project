@@ -525,7 +525,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1902106104}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.33169046, y: -0.66598654, z: 0.43717307, w: -0.5052951}
+  m_LocalRotation: {x: 0.15624622, y: -0.68851185, z: 0.15571448, w: 0.69086295}
   m_LocalPosition: {x: 83.00957, y: 91.5934, z: 43.494476}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -767,6 +767,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8011954567709082448, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: cinemachineBrain
+      value: 
+      objectReference: {fileID: 1902106108}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

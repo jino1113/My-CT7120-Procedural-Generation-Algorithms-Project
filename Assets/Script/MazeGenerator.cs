@@ -60,6 +60,10 @@ public class MazeGenerator : MonoBehaviour
 
     void Start()
     {
+        // ซ่อนและล็อคเคอร์เซอร์
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         // สร้างเขาวงกต, ผู้เล่น, ทางออก และศัตรูเหมือนเดิม
         _mazeGrid = new MazeCell[_mazeWidth, _mazeDepth];
         for (int x = 0; x < _mazeWidth; x++)
@@ -88,14 +92,16 @@ public class MazeGenerator : MonoBehaviour
         float minDistanceFromPlayer = 5f;
         float minDistanceFromExit = 5f;
         float minDistanceFromEnemies = 3f;
+        float minDistanceFromOtherLandmarks = 3f; // ระยะห่างขั้นต่ำระหว่างแลนด์มาร์ค
 
-        SpawnMultipleLandmarks(_landmarkPrefab, spawnPoint, exitObject, numberOfLandmarks, minDistanceFromPlayer, minDistanceFromExit, enemies, minDistanceFromEnemies);
+        SpawnMultipleLandmarks(_landmarkPrefab, spawnPoint, exitObject, numberOfLandmarks, minDistanceFromPlayer, minDistanceFromExit, enemies, minDistanceFromEnemies, minDistanceFromOtherLandmarks);
     }
 
 
-
-    private void SpawnMultipleLandmarks(GameObject landmarkPrefab, Transform playerTransform, GameObject exit, int numberOfLandmarks, float minDistanceFromPlayer, float minDistanceFromExit, List<GameObject> enemies, float minDistanceFromEnemies)
+    private void SpawnMultipleLandmarks(GameObject landmarkPrefab, Transform playerTransform, GameObject exit, int numberOfLandmarks, float minDistanceFromPlayer, float minDistanceFromExit, List<GameObject> enemies, float minDistanceFromEnemies, float minDistanceFromOtherLandmarks)
     {
+        List<Vector3> landmarkPositions = new List<Vector3>(); // เก็บตำแหน่งแลนด์มาร์คที่สร้างไปแล้ว
+
         for (int i = 0; i < numberOfLandmarks; i++)
         {
             Vector3 spawnPosition;
@@ -110,14 +116,21 @@ public class MazeGenerator : MonoBehaviour
                 randomCell = _mazeGrid[x, z];
                 spawnPosition = randomCell.transform.position + Vector3.up * 0.5f;
 
-            } while (Vector3.Distance(spawnPosition, playerTransform.position) < minDistanceFromPlayer ||
-                     Vector3.Distance(spawnPosition, exit.transform.position) < minDistanceFromExit ||
-                     enemies.Any(enemy => Vector3.Distance(spawnPosition, enemy.transform.position) < minDistanceFromEnemies));
+            } while (
+                Vector3.Distance(spawnPosition, playerTransform.position) < minDistanceFromPlayer || // ไม่ให้ใกล้ผู้เล่น
+                Vector3.Distance(spawnPosition, exit.transform.position) < minDistanceFromExit ||   // ไม่ให้ใกล้ทางออก
+                enemies.Any(enemy => Vector3.Distance(spawnPosition, enemy.transform.position) < minDistanceFromEnemies) || // ไม่ให้ใกล้ศัตรู
+                landmarkPositions.Any(existingPosition => Vector3.Distance(spawnPosition, existingPosition) < minDistanceFromOtherLandmarks) // ไม่ให้ใกล้แลนด์มาร์คที่สร้างไปแล้ว
+            );
 
             // สร้างแลนด์มาร์คที่ตำแหน่งที่หาได้
             Instantiate(landmarkPrefab, spawnPosition, Quaternion.identity);
+
+            // บันทึกตำแหน่งแลนด์มาร์คที่สร้างไปแล้ว
+            landmarkPositions.Add(spawnPosition);
         }
     }
+
 
 
     private void SpawnEnemyBall(Transform playerTransform, float customMinimumDistance)
@@ -155,17 +168,17 @@ public class MazeGenerator : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogWarning("EnemyBall prefab does not have an EnemyBall script attached!");
+                    //Debug.LogWarning("EnemyBall prefab does not have an EnemyBall script attached!");
                 }
             }
             else
             {
-                Debug.LogWarning("No GameObject with Tag 'Player' found in the scene!");
+                //Debug.LogWarning("No GameObject with Tag 'Player' found in the scene!");
             }
         }
         else
         {
-            Debug.LogWarning("Failed to find a valid position on the NavMesh for EnemyBall!");
+            //Debug.LogWarning("Failed to find a valid position on the NavMesh for EnemyBall!");
         }
     }
 

@@ -286,7 +286,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecenterTarget: 0
   m_VerticalAxis:
-    Value: 66.56413
+    Value: 32.185528
     m_SpeedMode: 1
     m_MaxSpeed: 0.5
     m_AccelTime: 0.1
@@ -310,7 +310,7 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_HorizontalAxis:
-    Value: -94.79296
+    Value: 76.74124
     m_SpeedMode: 1
     m_MaxSpeed: 0.5
     m_AccelTime: 0.1
@@ -384,7 +384,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 100
+  m_Priority: 10
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 7370637806477227115}
@@ -422,4 +422,4 @@ MonoBehaviour:
   PlayerIndex: -1
   AutoEnableInputs: 1
   XYAxis: {fileID: 6057145982389483080, guid: d775d2b8bfb7be142a7c7e9332a8a084, type: 3}
-  ZAxis: {fileID: 0}
+  ZAxis: {fileID: 6057145982389483080, guid: d775d2b8bfb7be142a7c7e9332a8a084, type: 3}

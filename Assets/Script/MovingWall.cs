@@ -28,7 +28,7 @@ public class MovingWall : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Enemy object not found! Please assign it in the inspector."); // แสดงข้อความข้อผิดพลาดในกรณีที่ไม่พบ / Show error if no enemy is found
+                //Debug.LogError("Enemy object not found! Please assign it in the inspector."); // แสดงข้อความข้อผิดพลาดในกรณีที่ไม่พบ / Show error if no enemy is found
             }
         }
     }
@@ -43,7 +43,7 @@ public class MovingWall : MonoBehaviour
         // ถ้าศัตรูอยู่ในระยะที่กำหนด / If the enemy is within the detection radius
         if (distanceToEnemy <= detectionRadius)
         {
-            Debug.Log($"Enemy is close! Wall at {transform.position} is moving violently."); // แสดงข้อความใน Console เมื่อศัตรูเข้าใกล้ / Log a message when the enemy is near
+            //Debug.Log($"Enemy is close! Wall at {transform.position} is moving violently."); // แสดงข้อความใน Console เมื่อศัตรูเข้าใกล้ / Log a message when the enemy is near
 
             // ปรับความสูงของกำแพงแบบรุนแรง / Adjust the wall height violently
             float noise = Mathf.PerlinNoise(transform.position.x + Time.time * moveSpeed, transform.position.z + Time.time * moveSpeed);
@@ -55,7 +55,7 @@ public class MovingWall : MonoBehaviour
             // กลับสู่ขนาดเดิม / Gradually restore the wall to its original size
             transform.localScale = Vector3.Lerp(transform.localScale, originalScale, Time.deltaTime * moveSpeed);
 
-            Debug.Log($"Wall at {transform.position} is restoring to original size."); // แสดงข้อความใน Console เมื่อกำแพงกลับสู่ขนาดเดิม / Log a message when the wall restores its size
+            //Debug.Log($"Wall at {transform.position} is restoring to original size."); // แสดงข้อความใน Console เมื่อกำแพงกลับสู่ขนาดเดิม / Log a message when the wall restores its size
         }
     }
 }
