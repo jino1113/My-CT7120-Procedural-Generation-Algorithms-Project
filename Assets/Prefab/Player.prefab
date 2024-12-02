@@ -286,9 +286,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RecenterTarget: 0
   m_VerticalAxis:
-    Value: 70
-    m_SpeedMode: 0
-    m_MaxSpeed: 300
+    Value: 66.56413
+    m_SpeedMode: 1
+    m_MaxSpeed: 0.5
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse Y
@@ -310,9 +310,9 @@ MonoBehaviour:
     m_LegacyHeadingDefinition: -1
     m_LegacyVelocityFilterStrength: -1
   m_HorizontalAxis:
-    Value: -76.63501
-    m_SpeedMode: 0
-    m_MaxSpeed: 300
+    Value: -94.79296
+    m_SpeedMode: 1
+    m_MaxSpeed: 0.5
     m_AccelTime: 0.1
     m_DecelTime: 0.1
     m_InputAxisName: Mouse X
@@ -361,7 +361,7 @@ Transform:
   m_GameObject: {fileID: 8621427025517896278}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.07999827, y: 0.9200061, z: -0.07000425}
+  m_LocalPosition: {x: 0.079996936, y: 0.91999817, z: -0.07000067}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -384,7 +384,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 100
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 7370637806477227115}
