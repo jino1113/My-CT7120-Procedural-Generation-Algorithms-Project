@@ -1034,12 +1034,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 975981964}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2609259068ca9e84c9f362444f970e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballPrefab: {fileID: 1646047989958134554, guid: 8cbcb14087bf86a4d9c40c7cefe26e38, type: 3}
+  ballPrefab: {fileID: 1646047989958134554, guid: f2a8def5d95aab846b2355d64ff0d15e, type: 3}
   spawnPoint: {fileID: 356238539}
   destroyDelay: 20
   ballCount: 10
