@@ -11,10 +11,10 @@ public class RandomTitleGenerator : MonoBehaviour
     void Start()
     {
         // กำหนดชื่อและโอกาส / Define names and their associated probabilities
-        names.Add("The scary random maze"); probabilities.Add(90f); // ชื่อและโอกาสที่จะแสดงผล / Title with 90% chance
-        names.Add("Spooky_randomness"); probabilities.Add(10f); // ชื่อและโอกาสที่จะแสดงผล / Title with 10% chance
-        names.Add("Home"); probabilities.Add(3f); // ชื่อและโอกาสที่จะแสดงผล / Title with 3% chance
-        names.Add("Right behind you"); probabilities.Add(2f); // ชื่อและโอกาสที่จะแสดงผล / Title with 2% chance
+        names.Add("The scary random maze"); probabilities.Add(60f); // ชื่อและโอกาสที่จะแสดงผล / Title with 90% chance
+        names.Add("No Tile"); probabilities.Add(20f); // ชื่อและโอกาสที่จะแสดงผล / Title with 10% chance
+        names.Add("SadSad"); probabilities.Add(10f); // ชื่อและโอกาสที่จะแสดงผล / Title with 3% chance
+        names.Add("Behind You"); probabilities.Add(10f); // ชื่อและโอกาสที่จะแสดงผล / Title with 2% chance
 
         // สุ่มชื่อและตั้งค่า / Randomly select a name and set it to the text component
         string randomName = GetRandomName();
@@ -57,11 +57,11 @@ public class RandomTitleGenerator : MonoBehaviour
         {
             case "The scary random maze":
                 break;
-            case "Spooky_randomness":
+            case "No Tile":
                 break;
-            case "Home":
+            case "SadSad":
                 break;
-            case "Right behind you":
+            case "Behind You":
                 break;
             default:
                 break;

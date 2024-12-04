@@ -3,6 +3,28 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
+    [SerializeField] private GameObject howToPlayWindow;
+
+    public void ShowHowToPlay()
+    {
+        howToPlayWindow.SetActive(true); // แสดงหน้าต่าง
+    }
+
+    public void CloseHowToPlay()
+    {
+        howToPlayWindow.SetActive(false); // ปิดหน้าต่าง
+    }
+
+    private void Update()
+    {
+        // ตรวจสอบการกดปุ่ม ESC
+        if (howToPlayWindow.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseHowToPlay(); // ปิดหน้าต่างเมื่อกด ESC
+        }
+    }
+
+
     // ฟังก์ชันสำหรับเปลี่ยน Scene
     // Function to switch between scenes
     public void LoadScene(string sceneName)
