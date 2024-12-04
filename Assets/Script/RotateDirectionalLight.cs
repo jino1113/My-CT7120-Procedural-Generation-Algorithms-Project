@@ -26,8 +26,7 @@ public class RotateDirectionalLight : MonoBehaviour
 
     private void SetNewTargetRotation()
     {
-        // ใช้ Random.Range เพื่อสุ่มมุมในแกน X, Y
-        // Use Random.Range to generate random angles for X and Y axes
+        // Use Random.Range to generate / random angles for X and Y axes
         float randomX = Random.Range(-90f, 90f); // สุ่มมุมแกน X / Randomize X axis (for sunrise/sunset effect)
         float randomY = Random.Range(0f, 360f); // สุ่มมุมแกน Y / Randomize Y axis (horizontal rotation)
 
