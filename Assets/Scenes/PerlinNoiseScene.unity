@@ -3730,7 +3730,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2102235033}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2946298317050279949, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1119890076}
   m_SourcePrefab: {fileID: 100100000, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
 --- !u!224 &1119890072 stripped
 RectTransform:
@@ -3742,7 +3745,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8011954567709082448, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
   m_PrefabInstance: {fileID: 1119890071}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 1119890075}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 967c92f3cfea9574085d3c29d93a77ac, type: 3}
@@ -3759,6 +3762,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1119890075 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2946298317050279949, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+  m_PrefabInstance: {fileID: 1119890071}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1119890076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119890075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3551c2d94b2073f4a898f826c15ea2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicToggle: {fileID: 1119890074}
 --- !u!1001 &1193113956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5621,9 +5642,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27188cc57079994cb7876e4b111310c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSources:
-  - {fileID: 1894368290}
   musicToggle: {fileID: 1119890074}
+  backgroundMusic: {fileID: 1894368290}
+  menuMusic: {fileID: 8300000, guid: b0285bd3d7e0210458f940074b355a62, type: 3}
+  gameMusic: {fileID: 8300000, guid: b9706674bd0de3a45a78878ed8668cce, type: 3}
 --- !u!82 &1894368290
 AudioSource:
   m_ObjectHideFlags: 0

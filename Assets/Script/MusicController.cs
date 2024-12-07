@@ -1,71 +1,101 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class MusicController : MonoBehaviour
 {
-    public List<AudioSource> musicSources; // รายการเพลงที่ต้องการควบคุม
-    public Toggle musicToggle; // ปุ่ม Toggle สำหรับเปิด/ปิดเพลง
-    private int currentMusicIndex = 0; // เพลงปัจจุบันที่เล่นอยู่
+    private static MusicController instance;
+    [SerializeField] private Toggle musicToggle;
+    [SerializeField] private AudioSource backgroundMusic;
+    [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private AudioClip gameMusic;
 
-    void Start()
+    private bool isPlaying = true; // Track whether music is playing
+
+    private void Awake()
     {
-        // หาก Toggle ยังไม่ได้เชื่อมโยงใน Inspector ให้ลองค้นหาใน Scene
-        if (musicToggle == null)
+        if (instance != null && instance != this)
         {
-            musicToggle = FindObjectOfType<Toggle>();
+            Destroy(gameObject);
+            return;
+        }
 
-            if (musicToggle == null)
-            {
-                Debug.LogWarning("Music Toggle not found in the new scene!");
-                return;
-            }
+        instance = this;
+        DontDestroyOnLoad(gameObject); // Keep MusicController across scenes
+    }
 
-            // ตั้งค่า Listener สำหรับ Toggle ใหม่
-            musicToggle.onValueChanged.AddListener(delegate { ToggleMusic(musicToggle.isOn); });
-            musicToggle.isOn = musicSources.Count > 0 && musicSources[0].isPlaying; // อัปเดตสถานะ Toggle
+    private void Start()
+    {
+        SyncToggleState(); // Sync toggle with the current music state
+    }
+
+    public void PlayMenuMusic()
+    {
+        if (backgroundMusic.clip != menuMusic) // Check if it's already playing menu music
+        {
+            backgroundMusic.clip = menuMusic;
+            backgroundMusic.time = 0f; // Start from the beginning
+        }
+        if (isPlaying) backgroundMusic.Play(); // Only play if music is enabled
+        Debug.Log("Playing menu music.");
+    }
+
+    public void PlayGameMusic()
+    {
+        if (backgroundMusic.clip != gameMusic) // Check if it's already playing game music
+        {
+            backgroundMusic.clip = gameMusic;
+            backgroundMusic.time = 0f; // Start from the beginning
+        }
+        if (isPlaying) backgroundMusic.Play(); // Only play if music is enabled
+        Debug.Log("Playing game music.");
+    }
+
+    public void StopMusic()
+    {
+        if (backgroundMusic.isPlaying)
+        {
+            backgroundMusic.Stop(); // Stop the music
+            Debug.Log("Music stopped.");
         }
     }
 
     public void ToggleMusic(bool isOn)
     {
-        // เปิด/ปิดเพลงทั้งหมดในรายการ
-        foreach (var musicSource in musicSources)
+        isPlaying = isOn;
+
+        if (isOn)
         {
-            if (musicSource != null)
-            {
-                if (isOn)
-                {
-                    musicSource.Play(); // เล่นเพลง
-                }
-                else
-                {
-                    musicSource.Pause(); // หยุดเพลง
-                }
-            }
+            backgroundMusic.Play(); // Resume playing
+            Debug.Log("Music started.");
+        }
+        else
+        {
+            backgroundMusic.Pause(); // Pause the music
+            Debug.Log("Music paused.");
         }
     }
 
-    public void PlaySpecificMusic(int musicIndex)
+    public void UpdateToggleReference(Toggle newToggle)
     {
-        if (musicIndex < 0 || musicIndex >= musicSources.Count) return; // ตรวจสอบ index ให้อยู่ในช่วงที่ถูกต้อง
+        if (musicToggle != null)
+        {
+            musicToggle.onValueChanged.RemoveListener(ToggleMusic); // Remove old listener
+        }
 
-        // หยุดเพลงปัจจุบันทั้งหมด
-        StopAllMusic();
+        musicToggle = newToggle;
 
-        // เล่นเพลงใหม่ตาม index
-        currentMusicIndex = musicIndex;
-        musicSources[currentMusicIndex].Play();
+        if (musicToggle != null)
+        {
+            musicToggle.onValueChanged.AddListener(ToggleMusic); // Add new listener
+            SyncToggleState(); // Sync toggle state with music status
+        }
     }
 
-    public void StopAllMusic()
+    public void SyncToggleState()
     {
-        foreach (var musicSource in musicSources)
+        if (musicToggle != null)
         {
-            if (musicSource.isPlaying)
-            {
-                musicSource.Stop(); // หยุดเพลง
-            }
+            musicToggle.isOn = isPlaying; // Update toggle's visual state
         }
     }
 }

@@ -397,9 +397,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27188cc57079994cb7876e4b111310c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSources:
-  - {fileID: 1547410535}
   musicToggle: {fileID: 7046394916368053653}
+  backgroundMusic: {fileID: 1547410535}
+  menuMusic: {fileID: 8300000, guid: b0285bd3d7e0210458f940074b355a62, type: 3}
+  gameMusic: {fileID: 8300000, guid: b9706674bd0de3a45a78878ed8668cce, type: 3}
 --- !u!4 &1547410531
 Transform:
   m_ObjectHideFlags: 0
@@ -863,13 +864,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: b51c3f0eb6296b548bfe8cde512004c2, type: 3}
     - target: {fileID: 2218607195207594142, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: settingWindow
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 2218607195207594142, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: howToPlayWindow
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2218607195207594142, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: musicController
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1547410529}
     - target: {fileID: 2444571084558605583, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -970,6 +975,38 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1547410529}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ToggleMusic
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MusicController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8275063213032509997, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 9082130390155560384, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -978,7 +1015,10 @@ PrefabInstance:
     m_RemovedGameObjects:
     - {fileID: 2952133424743483132, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2946298317050279949, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7046394916368053655}
   m_SourcePrefab: {fileID: 100100000, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
 --- !u!114 &7046394916368053653 stripped
 MonoBehaviour:
@@ -991,6 +1031,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &7046394916368053654 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2946298317050279949, guid: 2a56ff8c32276664c9fcbc31326da95b, type: 3}
+  m_PrefabInstance: {fileID: 7046394916368053652}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7046394916368053655
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7046394916368053654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3551c2d94b2073f4a898f826c15ea2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicToggle: {fileID: 7046394916368053653}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

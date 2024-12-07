@@ -653,6 +653,7 @@ GameObject:
   - component: {fileID: 208199794}
   - component: {fileID: 208199793}
   - component: {fileID: 208199795}
+  - component: {fileID: 208199796}
   m_Layer: 5
   m_Name: SceneController
   m_TagString: Untagged
@@ -672,11 +673,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cf0229928d057e448300eca06fccae2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  menuMusic: {fileID: 8300000, guid: b0285bd3d7e0210458f940074b355a62, type: 3}
-  previewMusic: {fileID: 8300000, guid: b0285bd3d7e0210458f940074b355a62, type: 3}
-  gameplayMusic: {fileID: 0}
   settingWindow: {fileID: 1877309076}
   howToPlayWindow: {fileID: 1392673297}
+  musicController: {fileID: 0}
 --- !u!224 &208199794
 RectTransform:
   m_ObjectHideFlags: 0
@@ -709,6 +708,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   titleText: {fileID: 1416821110}
+--- !u!114 &208199796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208199792}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3551c2d94b2073f4a898f826c15ea2a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  musicToggle: {fileID: 1823529258}
 --- !u!1 &306818006
 GameObject:
   m_ObjectHideFlags: 0
@@ -3367,7 +3379,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: b0285bd3d7e0210458f940074b355a62, type: 3}
-  m_PlayOnAwake: 0
+  m_PlayOnAwake: 1
   m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
@@ -3479,9 +3491,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a27188cc57079994cb7876e4b111310c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicSources:
-  - {fileID: 1531915816}
   musicToggle: {fileID: 1823529258}
+  backgroundMusic: {fileID: 1531915816}
+  menuMusic: {fileID: 8300000, guid: b0285bd3d7e0210458f940074b355a62, type: 3}
+  gameMusic: {fileID: 8300000, guid: b9706674bd0de3a45a78878ed8668cce, type: 3}
 --- !u!114 &1531915819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3770,7 +3783,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1823529257}
   - component: {fileID: 1823529258}
-  - component: {fileID: 1823529259}
   m_Layer: 5
   m_Name: MusicToggle
   m_TagString: Untagged
@@ -3847,18 +3859,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
---- !u!114 &1823529259
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1823529256}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93355a62de85cd14a892cc7942858ecf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1877309076
 GameObject:
   m_ObjectHideFlags: 0
