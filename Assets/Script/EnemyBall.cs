@@ -41,7 +41,7 @@ public class EnemyBall : MonoBehaviour
 
 
 
-    [SerializeField]private MusicFader musicFader; // อ้างอิง MusicFader
+    private MusicFader musicFader; // อ้างอิง MusicFader
     private bool isPlayerInRange = false;
 
     void Start()
@@ -75,7 +75,7 @@ public class EnemyBall : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Player object not found! Please assign it in the inspector or ensure it has the 'Player' tag."); // Log error if the player is not found / แจ้งเตือนถ้าผู้เล่นไม่ถูกพบ
+                //Debug.LogError("Player object not found! Please assign it in the inspector or ensure it has the 'Player' tag."); // Log error if the player is not found / แจ้งเตือนถ้าผู้เล่นไม่ถูกพบ
             }
         }
 
@@ -84,43 +84,48 @@ public class EnemyBall : MonoBehaviour
             musicFader = FindObjectOfType<MusicFader>();
             if (musicFader == null)
             {
-                Debug.LogError("MusicFader script not found in the scene!");
+                //Debug.LogError("MusicFader script not found in the scene!");
             }
         }
     }
 
     void Update()
     {
-        // If the game is over, stop any further actions / ถ้าเกมจบแล้วไม่ต้องทำอะไรต่อ
+        // If the game is over, stop any further actions
         if (isGameOver) return;
 
         if (agent != null && agent.isOnNavMesh)
         {
-            // Check the distance between the enemy and the player / ตรวจจับระยะระหว่างผู้เล่นและศัตรู
+            // Check the distance between the enemy and the player
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
+            // Handle music based on distance to player
             if (distanceToPlayer <= detectionRadius && !isPlayerInRange)
             {
                 isPlayerInRange = true;
-                musicFader.SwitchToEnemyMusic(); // เปลี่ยนไปเล่นเพลงศัตรู
+                Debug.Log("Player entered detection range. Switching to enemy music.");
+                musicFader?.SwitchToEnemyMusic(); // Switch to enemy music
             }
             else if (distanceToPlayer > detectionRadius && isPlayerInRange)
             {
                 isPlayerInRange = false;
-                musicFader.SwitchToBackgroundMusic(); // เปลี่ยนกลับไปเพลงพื้นหลัง
+                Debug.Log("Player exited detection range. Switching to background music.");
+                musicFader?.SwitchToBackgroundMusic(); // Switch back to background music
             }
 
             if (isChasing)
             {
                 if (distanceToPlayer > chaseRadius)
                 {
-                    // Stop chasing and return to wandering / หยุดการตามล่าและกลับสู่โหมดเดินสุ่ม
+                    // Stop chasing and return to wandering
+                    Debug.Log("Player exited chase radius. Returning to wander mode.");
                     isChasing = false;
                     StartWandering();
                 }
                 else
                 {
-                    // Keep chasing the player / ยังคงตามล่าผู้เล่น
+                    // Keep chasing the player
+                    Debug.Log("Chasing the player.");
                     agent.SetDestination(player.position);
                 }
             }
@@ -128,30 +133,31 @@ public class EnemyBall : MonoBehaviour
             {
                 if (distanceToPlayer <= detectionRadius)
                 {
-                    // Start chasing the player / เริ่มการตามล่าผู้เล่น
+                    // Start chasing the player
+                    Debug.Log("Player entered detection radius. Starting chase.");
                     isChasing = true;
                     agent.isStopped = false;
                 }
                 else
                 {
-                    // Wandering behavior / พฤติกรรมเดินสุ่ม
+                    // Wandering behavior
                     timer += Time.deltaTime;
 
                     if (isWalking && timer >= wanderDuration)
                     {
-                        // Change status to stop walking / เปลี่ยนสถานะเป็นหยุดเดิน
+                        // Change status to stop walking
                         isWalking = false;
                         timer = 0f;
-                        agent.isStopped = true; // Stop the agent / หยุดการเคลื่อนที่
+                        agent.isStopped = true; // Stop the agent
                     }
                     else if (!isWalking && timer >= stopDuration)
                     {
-                        // Change status to walking again / เปลี่ยนสถานะเป็นเดินอีกครั้ง
+                        // Change status to walking again
                         isWalking = true;
                         timer = 0f;
-                        agent.isStopped = false; // Resume movement / เริ่มการเคลื่อนที่
+                        agent.isStopped = false; // Resume movement
 
-                        // Set a random destination within the wander radius / ตั้งค่าจุดหมายปลายทางแบบสุ่ม
+                        // Set a random destination within the wander radius
                         Vector3 randomDestination = GetRandomPoint(transform.position, wanderRadius);
                         agent.SetDestination(randomDestination);
                     }
@@ -162,17 +168,18 @@ public class EnemyBall : MonoBehaviour
         {
             if (agent != null && !agent.isOnNavMesh)
             {
-                Debug.LogWarning("EnemyBall is not on the NavMesh!"); // Log warning if the enemy is not on the NavMesh / แจ้งเตือนถ้าศัตรูไม่ได้อยู่บน NavMesh
+                Debug.LogWarning("EnemyBall is not on the NavMesh!");
             }
         }
     }
+
 
     private void OnCollisionEnter(Collision collision)
     {
         // Check collision with the player / ตรวจสอบการชนกับผู้เล่น
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player collided with EnemyBall!");
+            //Debug.Log("Player collided with EnemyBall!");
             GameOver();
         }
     }
@@ -193,7 +200,7 @@ public class EnemyBall : MonoBehaviour
         // Set the game-over status / ตั้งสถานะเกมจบ
         isGameOver = true;
 
-        Debug.Log("Game Over! Player has been caught."); // Log the game-over message / แจ้งข้อความว่าเกมจบ
+        //Debug.Log("Game Over! Player has been caught."); // Log the game-over message / แจ้งข้อความว่าเกมจบ
     }
 
     // Function to generate a random destination point / ฟังก์ชันสำหรับสร้างจุดหมายปลายทางแบบสุ่ม
