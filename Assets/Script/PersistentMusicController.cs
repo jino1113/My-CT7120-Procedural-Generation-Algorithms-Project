@@ -1,48 +1,48 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PersistentMusicController : MonoBehaviour
 {
     private static PersistentMusicController instance;
     private AudioSource audioSource;
 
-    public AudioClip defaultMenuMusic; // เพลงเมนูเริ่มต้น
-
     void Awake()
     {
-        // ป้องกันการสร้างตัวซ้ำ
+        // ตรวจสอบ Singleton
         if (instance != null && instance != this)
         {
-            Destroy(gameObject); // ลบตัวซ้ำ
+            Destroy(gameObject); // ทำลายตัวซ้ำ
             return;
         }
 
         instance = this;
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject); // รักษา BackgroundMusic ข้าม Scene
 
+        // ตรวจสอบ AudioSource
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
-            Debug.LogError("No AudioSource found on PersistentMusicController!");
+            Debug.LogError("No AudioSource found on PersistentMusicController! Please add an AudioSource component.");
         }
+
+        SceneManager.sceneLoaded += OnSceneLoaded; // สมัคร Event เมื่อเปลี่ยน Scene
     }
 
-    void Start()
+    void OnDestroy()
     {
-        // เล่นเพลงเมนูเริ่มต้น
-        if (audioSource != null && defaultMenuMusic != null && !audioSource.isPlaying)
-        {
-            audioSource.clip = defaultMenuMusic;
-            audioSource.Play();
-            Debug.Log("Playing default menu music: " + defaultMenuMusic.name);
-        }
+        SceneManager.sceneLoaded -= OnSceneLoaded; // ยกเลิก Event เมื่อ Object ถูกทำลาย
     }
 
-    public void StopMusic()
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (audioSource != null && audioSource.isPlaying)
+        string sceneName = scene.name;
+        Debug.Log($"Scene loaded: {sceneName}");
+
+        // ถ้าเป็น GameplayMazeScene ให้ทำลาย BackgroundMusic
+        if (sceneName == "GameplayMazeScene")
         {
-            Debug.Log("Stopping music: " + audioSource.clip?.name);
-            audioSource.Stop();
+            Destroy(gameObject); // ทำลาย PersistentMusicController ตัวนี้
+            Debug.Log("Destroyed BackgroundMusic in GameplayMazeScene.");
         }
     }
 
@@ -50,27 +50,31 @@ public class PersistentMusicController : MonoBehaviour
     {
         if (audioSource != null)
         {
-            if (clip != null)
+            // ถ้าเพลงที่ต้องการเล่นเหมือนกับเพลงที่กำลังเล่นอยู่ ให้ข้ามการเริ่มใหม่
+            if (clip != null && audioSource.clip == clip && audioSource.isPlaying)
             {
-                audioSource.Stop(); // หยุดเพลงที่กำลังเล่นอยู่
-                audioSource.clip = clip;
-                audioSource.Play();
-                Debug.Log("Playing music: " + clip.name);
+                Debug.Log("Music is already playing: " + clip.name);
+                return;
             }
+
+            // เริ่มเพลงใหม่
+            audioSource.Stop();
+            audioSource.clip = clip;
+            audioSource.Play();
+            Debug.Log("Playing music: " + clip.name);
         }
         else
         {
-            Debug.LogError("No AudioSource component found on this GameObject.");
+            Debug.LogError("No AudioSource component found on this GameObject. Cannot play music.");
         }
     }
 
-    public void DestroyBackgroundMusicInScene(string sceneName)
+    public void StopMusic()
     {
-        GameObject bgMusic = GameObject.Find("BackgroundMusic");
-        if (bgMusic != null)
+        if (audioSource != null && audioSource.isPlaying)
         {
-            Debug.Log($"Destroying BackgroundMusic in {sceneName}.");
-            Destroy(bgMusic);
+            audioSource.Stop();
+            Debug.Log("Music stopped.");
         }
     }
 }

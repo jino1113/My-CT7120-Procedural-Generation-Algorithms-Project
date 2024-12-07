@@ -3,52 +3,61 @@ using UnityEngine.SceneManagement;
 
 public class SceneController : MonoBehaviour
 {
-    [SerializeField] private GameObject howToPlayWindow;
-    [SerializeField] private GameObject settingWindow;
+    [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private AudioClip previewMusic;
 
-    [SerializeField] private PersistentMusicController musicController;
+    [SerializeField] private GameObject settingWindow; // อ้างอิงถึง Setting UI
+    [SerializeField] private GameObject howToPlayWindow; // อ้างอิงถึง HowToPlay UI
+
+    private PersistentMusicController musicController;
 
     void Start()
     {
-        // หากไม่มี PersistentMusicController ใน Scene ให้ค้นหา
-        if (musicController == null)
+        musicController = FindObjectOfType<PersistentMusicController>();
+
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        // กำหนดเพลงตาม Scene
+        if (currentScene == "MenuScene")
         {
-            musicController = FindObjectOfType<PersistentMusicController>();
-            if (musicController == null)
-            {
-                Debug.LogError("PersistentMusicController not found in the scene!");
-            }
+            musicController?.PlayMusic(menuMusic);
+        }
+        else if (currentScene == "MazeGenPreviewScene" || currentScene == "PerlinNoiseScene")
+        {
+            musicController?.PlayMusic(previewMusic);
         }
 
-        Time.timeScale = 1f; // คืนค่าเวลาให้ปกติ
+        Time.timeScale = 1f; // คืนค่าเวลาให้ปกติเมื่อเริ่ม Scene ใหม่
     }
 
-    public void ShowHowToPlay()
+    public void LoadScene(string sceneName)
     {
-        if (howToPlayWindow != null)
+        string currentScene = SceneManager.GetActiveScene().name;
+
+        // ถ้าเปลี่ยนไป GameplayMazeScene ให้ทำลาย BackgroundMusic
+        if (sceneName == "GameplayMazeScene" && musicController != null)
         {
-            howToPlayWindow.SetActive(true);
-            Time.timeScale = 0f; // หยุดเวลาในเกม
+            Destroy(musicController.gameObject); // ลบ PersistentMusicController
         }
-        else
+
+        // คืนค่าเวลาให้ปกติก่อนเปลี่ยน Scene
+        Time.timeScale = 1f;
+
+        // เปลี่ยน Scene
+        SceneManager.LoadScene(sceneName);
+
+        // กำหนดเพลงสำหรับ Scene ใหม่
+        if (sceneName == "MenuScene")
         {
-            Debug.LogError("HowToPlay window not set in Inspector!");
+            musicController?.PlayMusic(menuMusic);
+        }
+        else if (sceneName == "MazeGenPreviewScene" || sceneName == "PerlinNoiseScene")
+        {
+            musicController?.PlayMusic(previewMusic);
         }
     }
 
-    public void CloseHowToPlay()
-    {
-        if (howToPlayWindow != null)
-        {
-            howToPlayWindow.SetActive(false);
-            Time.timeScale = 1f; // กลับมาเล่นเกมปกติ
-        }
-        else
-        {
-            Debug.LogError("HowToPlay window not set in Inspector!");
-        }
-    }
-
+    // แสดง Setting UI
     public void ShowSetting()
     {
         if (settingWindow != null)
@@ -58,41 +67,68 @@ public class SceneController : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Setting window not set in Inspector!");
+            Debug.LogError("Setting Window is not assigned in the Inspector!");
         }
     }
 
+    // ปิด Setting UI
     public void CloseSetting()
     {
         if (settingWindow != null)
         {
             settingWindow.SetActive(false);
-            Time.timeScale = 1f; // กลับมาเล่นเกมปกติ
+            Time.timeScale = 1f; // กลับมาเล่นเกมตามปกติ
         }
         else
         {
-            Debug.LogError("Setting window not set in Inspector!");
+            Debug.LogError("Setting Window is not assigned in the Inspector!");
         }
     }
 
-    public void LoadScene(string sceneName)
+    // แสดง HowToPlay UI
+    public void ShowHowToPlay()
     {
-        string currentScene = SceneManager.GetActiveScene().name; // เก็บชื่อ Scene ปัจจุบัน
-
-        // ทำลาย BackgroundMusic ของ Scene ปัจจุบัน
-        if (musicController != null)
+        if (howToPlayWindow != null)
         {
-            musicController.DestroyBackgroundMusicInScene(currentScene);
+            howToPlayWindow.SetActive(true);
+            Time.timeScale = 0f; // หยุดเวลาในเกม
         }
+        else
+        {
+            Debug.LogError("HowToPlay Window is not assigned in the Inspector!");
+        }
+    }
 
-        Time.timeScale = 1f; // คืนเวลาให้ปกติ
-        SceneManager.LoadScene(sceneName);
+    // ปิด HowToPlay UI
+    public void CloseHowToPlay()
+    {
+        if (howToPlayWindow != null)
+        {
+            howToPlayWindow.SetActive(false);
+            Time.timeScale = 1f; // กลับมาเล่นเกมตามปกติ
+        }
+        else
+        {
+            Debug.LogError("HowToPlay Window is not assigned in the Inspector!");
+        }
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f; // หยุดเวลาในเกม
+        Debug.Log("Game Paused.");
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f; // คืนค่าเวลาให้ปกติ
+        Debug.Log("Game Resumed.");
     }
 
     public void QuitGame()
     {
         Debug.Log("Game is exiting...");
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; // คืนค่าเวลาให้ปกติก่อนออกจากเกม
         Application.Quit();
     }
 }
