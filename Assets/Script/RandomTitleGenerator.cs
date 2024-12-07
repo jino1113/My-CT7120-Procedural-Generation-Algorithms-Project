@@ -12,7 +12,7 @@ public class RandomTitleGenerator : MonoBehaviour
     {
         // กำหนดชื่อและโอกาส / Define names and their associated probabilities
         names.Add("The scary random maze"); probabilities.Add(60f); // ชื่อและโอกาสที่จะแสดงผล / Title with 90% chance
-        names.Add("No Tile"); probabilities.Add(20f); // ชื่อและโอกาสที่จะแสดงผล / Title with 10% chance
+        names.Add("No Title"); probabilities.Add(20f); // ชื่อและโอกาสที่จะแสดงผล / Title with 10% chance
         names.Add("SadSad"); probabilities.Add(10f); // ชื่อและโอกาสที่จะแสดงผล / Title with 3% chance
         names.Add("Behind You"); probabilities.Add(10f); // ชื่อและโอกาสที่จะแสดงผล / Title with 2% chance
 
@@ -21,7 +21,6 @@ public class RandomTitleGenerator : MonoBehaviour
 
         // กำหนดฟอนต์และข้อความ / Set the text and adjust its font size based on the name
         titleText.text = randomName; // แสดงชื่อใน TextMeshPro / Display the randomly chosen name
-        AdjustFontSize(randomName); // ปรับขนาดฟอนต์ตามข้อความ / Adjust font size according to the name
     }
 
     private string GetRandomName()
@@ -48,23 +47,5 @@ public class RandomTitleGenerator : MonoBehaviour
         }
 
         return names[0]; // ค่าเริ่มต้น (กรณีผิดพลาด) / Default value in case of error
-    }
-
-    private void AdjustFontSize(string name)
-    {
-        // ปรับขนาดฟอนต์ตามข้อความ / Adjust the font size based on the name
-        switch (name)
-        {
-            case "The scary random maze":
-                break;
-            case "No Tile":
-                break;
-            case "SadSad":
-                break;
-            case "Behind You":
-                break;
-            default:
-                break;
-        }
     }
 }

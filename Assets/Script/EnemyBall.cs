@@ -28,10 +28,21 @@ public class EnemyBall : MonoBehaviour
     public float wanderRadius = 10f;
 
     // Detection radius for the player / ระยะที่ศัตรูตรวจจับผู้เล่น
-    public float detectionRadius = 2f;
+    public float detectionRadius = 10f;
+
+    // Chase radius for the player / ระยะที่ศัตรูยังคงตามล่าผู้เล่น
+    public float chaseRadius = 20f;
+
+    // Status for chasing / สถานะการตามล่า
+    private bool isChasing = false;
 
     // Status to check if the game is over / สถานะเกมจบ
     private bool isGameOver = false;
+
+
+
+    [SerializeField]private MusicFader musicFader; // อ้างอิง MusicFader
+    private bool isPlayerInRange = false;
 
     void Start()
     {
@@ -67,6 +78,15 @@ public class EnemyBall : MonoBehaviour
                 Debug.LogError("Player object not found! Please assign it in the inspector or ensure it has the 'Player' tag."); // Log error if the player is not found / แจ้งเตือนถ้าผู้เล่นไม่ถูกพบ
             }
         }
+
+        if (musicFader == null)
+        {
+            musicFader = FindObjectOfType<MusicFader>();
+            if (musicFader == null)
+            {
+                Debug.LogError("MusicFader script not found in the scene!");
+            }
+        }
     }
 
     void Update()
@@ -77,31 +97,65 @@ public class EnemyBall : MonoBehaviour
         if (agent != null && agent.isOnNavMesh)
         {
             // Check the distance between the enemy and the player / ตรวจจับระยะระหว่างผู้เล่นและศัตรู
-            if (player != null && Vector3.Distance(transform.position, player.position) <= detectionRadius)
+            float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+            if (distanceToPlayer <= detectionRadius && !isPlayerInRange)
             {
-                GameOver(); // Call the GameOver function / เรียกฟังก์ชันจบเกม
-                return;
+                isPlayerInRange = true;
+                musicFader.SwitchToEnemyMusic(); // เปลี่ยนไปเล่นเพลงศัตรู
+            }
+            else if (distanceToPlayer > detectionRadius && isPlayerInRange)
+            {
+                isPlayerInRange = false;
+                musicFader.SwitchToBackgroundMusic(); // เปลี่ยนกลับไปเพลงพื้นหลัง
             }
 
-            timer += Time.deltaTime;
-
-            if (isWalking && timer >= wanderDuration)
+            if (isChasing)
             {
-                // Change status to stop walking / เปลี่ยนสถานะเป็นหยุดเดิน
-                isWalking = false;
-                timer = 0f;
-                agent.isStopped = true; // Stop the agent / หยุดการเคลื่อนที่
+                if (distanceToPlayer > chaseRadius)
+                {
+                    // Stop chasing and return to wandering / หยุดการตามล่าและกลับสู่โหมดเดินสุ่ม
+                    isChasing = false;
+                    StartWandering();
+                }
+                else
+                {
+                    // Keep chasing the player / ยังคงตามล่าผู้เล่น
+                    agent.SetDestination(player.position);
+                }
             }
-            else if (!isWalking && timer >= stopDuration)
+            else
             {
-                // Change status to walking again / เปลี่ยนสถานะเป็นเดินอีกครั้ง
-                isWalking = true;
-                timer = 0f;
-                agent.isStopped = false; // Resume movement / เริ่มการเคลื่อนที่
+                if (distanceToPlayer <= detectionRadius)
+                {
+                    // Start chasing the player / เริ่มการตามล่าผู้เล่น
+                    isChasing = true;
+                    agent.isStopped = false;
+                }
+                else
+                {
+                    // Wandering behavior / พฤติกรรมเดินสุ่ม
+                    timer += Time.deltaTime;
 
-                // Set a random destination within the wander radius / ตั้งค่าจุดหมายปลายทางแบบสุ่ม
-                Vector3 randomDestination = GetRandomPoint(transform.position, wanderRadius);
-                agent.SetDestination(randomDestination);
+                    if (isWalking && timer >= wanderDuration)
+                    {
+                        // Change status to stop walking / เปลี่ยนสถานะเป็นหยุดเดิน
+                        isWalking = false;
+                        timer = 0f;
+                        agent.isStopped = true; // Stop the agent / หยุดการเคลื่อนที่
+                    }
+                    else if (!isWalking && timer >= stopDuration)
+                    {
+                        // Change status to walking again / เปลี่ยนสถานะเป็นเดินอีกครั้ง
+                        isWalking = true;
+                        timer = 0f;
+                        agent.isStopped = false; // Resume movement / เริ่มการเคลื่อนที่
+
+                        // Set a random destination within the wander radius / ตั้งค่าจุดหมายปลายทางแบบสุ่ม
+                        Vector3 randomDestination = GetRandomPoint(transform.position, wanderRadius);
+                        agent.SetDestination(randomDestination);
+                    }
+                }
             }
         }
         else
@@ -113,6 +167,16 @@ public class EnemyBall : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Check collision with the player / ตรวจสอบการชนกับผู้เล่น
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Debug.Log("Player collided with EnemyBall!");
+            GameOver();
+        }
+    }
+
     private void GameOver()
     {
         // Show the loss UI / แสดง UI แพ้
@@ -120,7 +184,7 @@ public class EnemyBall : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            lossUI.SetActive(true);
+            lossUI.SetActive(true); // แสดง UI
         }
 
         // Pause the game by stopping time / หยุดเวลาในเกม
@@ -144,5 +208,27 @@ public class EnemyBall : MonoBehaviour
         }
 
         return center; // If no valid position is found, return the center point / ถ้าไม่พบตำแหน่งที่เหมาะสม ให้คืนจุดเริ่มต้น
+    }
+
+    private void StartWandering()
+    {
+        // Start wandering behavior / เริ่มพฤติกรรมเดินสุ่ม
+        isWalking = true;
+        timer = 0f;
+        agent.isStopped = false;
+        Vector3 randomDestination = GetRandomPoint(transform.position, wanderRadius);
+        agent.SetDestination(randomDestination);
+    }
+
+    // Draw detection and chase radius in the scene view / วาดระยะตรวจจับและตามล่าใน Scene View
+    private void OnDrawGizmosSelected()
+    {
+        // Draw detection radius / วาดระยะตรวจจับ
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
+
+        // Draw chase radius / วาดระยะตามล่า
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, chaseRadius);
     }
 }

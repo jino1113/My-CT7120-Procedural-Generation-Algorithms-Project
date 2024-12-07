@@ -4,50 +4,95 @@ using UnityEngine.SceneManagement;
 public class SceneController : MonoBehaviour
 {
     [SerializeField] private GameObject howToPlayWindow;
+    [SerializeField] private GameObject settingWindow;
+
+    [SerializeField] private PersistentMusicController musicController;
+
+    void Start()
+    {
+        // หากไม่มี PersistentMusicController ใน Scene ให้ค้นหา
+        if (musicController == null)
+        {
+            musicController = FindObjectOfType<PersistentMusicController>();
+            if (musicController == null)
+            {
+                Debug.LogError("PersistentMusicController not found in the scene!");
+            }
+        }
+
+        Time.timeScale = 1f; // คืนค่าเวลาให้ปกติ
+    }
 
     public void ShowHowToPlay()
     {
-        howToPlayWindow.SetActive(true); // แสดงหน้าต่าง
+        if (howToPlayWindow != null)
+        {
+            howToPlayWindow.SetActive(true);
+            Time.timeScale = 0f; // หยุดเวลาในเกม
+        }
+        else
+        {
+            Debug.LogError("HowToPlay window not set in Inspector!");
+        }
     }
 
     public void CloseHowToPlay()
     {
-        howToPlayWindow.SetActive(false); // ปิดหน้าต่าง
-    }
-
-    private void Update()
-    {
-        // ตรวจสอบการกดปุ่ม ESC
-        if (howToPlayWindow.activeSelf && Input.GetKeyDown(KeyCode.Escape))
+        if (howToPlayWindow != null)
         {
-            CloseHowToPlay(); // ปิดหน้าต่างเมื่อกด ESC
+            howToPlayWindow.SetActive(false);
+            Time.timeScale = 1f; // กลับมาเล่นเกมปกติ
+        }
+        else
+        {
+            Debug.LogError("HowToPlay window not set in Inspector!");
         }
     }
 
+    public void ShowSetting()
+    {
+        if (settingWindow != null)
+        {
+            settingWindow.SetActive(true);
+            Time.timeScale = 0f; // หยุดเวลาในเกม
+        }
+        else
+        {
+            Debug.LogError("Setting window not set in Inspector!");
+        }
+    }
 
-    // ฟังก์ชันสำหรับเปลี่ยน Scene
-    // Function to switch between scenes
+    public void CloseSetting()
+    {
+        if (settingWindow != null)
+        {
+            settingWindow.SetActive(false);
+            Time.timeScale = 1f; // กลับมาเล่นเกมปกติ
+        }
+        else
+        {
+            Debug.LogError("Setting window not set in Inspector!");
+        }
+    }
+
     public void LoadScene(string sceneName)
     {
-        // ตั้งค่า Time.timeScale เป็น 1 เพื่อให้เวลาในเกมทำงานปกติ
-        // Set Time.timeScale to 1 to ensure game time runs normally
-        Time.timeScale = 1f;
+        string currentScene = SceneManager.GetActiveScene().name; // เก็บชื่อ Scene ปัจจุบัน
 
-        // โหลด Scene ตามชื่อที่ส่งมา
-        // Load the scene specified by the sceneName parameter
+        // ทำลาย BackgroundMusic ของ Scene ปัจจุบัน
+        if (musicController != null)
+        {
+            musicController.DestroyBackgroundMusicInScene(currentScene);
+        }
+
+        Time.timeScale = 1f; // คืนเวลาให้ปกติ
         SceneManager.LoadScene(sceneName);
     }
 
-    // ฟังก์ชันสำหรับออกจากเกม
-    // Function to quit the game
     public void QuitGame()
     {
-        // แสดงข้อความใน Console (จะเห็นผลเฉพาะใน Unity Editor)
-        // Display a log message in the Console (visible only in the Unity Editor)
         Debug.Log("Game is exiting...");
-
-        // ออกจากเกม (จะทำงานเฉพาะใน Build)
-        // Exit the game (works only in the build version)
+        Time.timeScale = 1f;
         Application.Quit();
     }
 }
