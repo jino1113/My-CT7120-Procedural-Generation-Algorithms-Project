@@ -152,9 +152,9 @@ MonoBehaviour:
   player: {fileID: 589417444708481990, guid: da027a38e1f82cd488df5cfcf82dfe36, type: 3}
   stopDuration: 1
   wanderDuration: 5
-  wanderRadius: 10
-  detectionRadius: 10
-  chaseRadius: 15
+  wanderRadius: 12
+  detectionRadius: 8
+  chaseRadius: 8
 --- !u!195 &911128648177737841
 NavMeshAgent:
   m_ObjectHideFlags: 0
